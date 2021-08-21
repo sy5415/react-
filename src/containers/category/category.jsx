@@ -1,14 +1,21 @@
 import React,{Component} from 'react'
-import { Card,Button,Table,Modal,Form,Input,message} from 'antd';
+import {Card,Button,Table,Modal,Form,Input,message} from 'antd';
+import {connect} from 'react-redux'
 import {reqCategoryList,reqAddCategory,reqUpdateCategory
 } from '../../api/'
-export default class Categery extends Component{
+import {createSaveCategoryAction} from '../../redux/action_creators/category_action'
+@connect(
+  state=>({}),
+  {saveCategory:createSaveCategoryAction}
+) 
+class Categery extends Component{
     state={
         categoryList:[],
         modalCurrentValue:'',
         modalCurrentId:'',
         visible:false,
         operType:'',
+        //加载效果设置
         isLoading:true,
         
     }
@@ -21,6 +28,7 @@ export default class Categery extends Component{
         const{status,data,msg}=result
         if(status===0){
             this.setState({categoryList:data})
+            this.props.saveCategory(data)
         }else{
             MessageChannel.error(msg,1)
         }
@@ -36,7 +44,6 @@ export default class Categery extends Component{
      //用于展示弹窗添加
     showAdd = () => {
         this.setState({visible:true,operType:'add'})
-        console.log(this.state)
       };
     //确认弹窗内的修改最后传递值
     handleOk = () => {
@@ -124,3 +131,4 @@ export default class Categery extends Component{
         )
     }
 }
+export default Categery

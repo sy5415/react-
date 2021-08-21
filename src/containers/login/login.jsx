@@ -50,7 +50,7 @@ class Login extends Component{
           },
           {
             min:3,
-            max:5,
+            max:8,
             message: '用户名为3到5位',
           }
         ]}

@@ -11,7 +11,6 @@ const instance=axios.create({
 instance.interceptors.request.use(function (config) {
     const {method,data}=config
     const{token} =store.getState().userInfo
-    console.log(token)
     if(token)config.headers.Authorization='sy_'+token
     if(method ==='post'){
         //没有用qs.stringify转换前的是对象类型 转换后是字符串类型

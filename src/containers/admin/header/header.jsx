@@ -29,8 +29,14 @@ class Header extends Component{
         store.dispatch(deleteUserInfo())
         this.props.saveTitle('首页')
      }
+     //左边标签类型在header上的展示功能
      getitle=()=>{
         let pathKey= this.props.location.pathname.split('/').reverse()[0];
+        if(this.props.location.pathname.indexOf('product')!==-1){
+            pathKey='product'
+        }else if(this.props.location.pathname.indexOf('user')!==-1){
+            pathKey='user'
+        }
         let title=""
         menuList.forEach((item)=>{
             if(item.children instanceof Array){
@@ -38,13 +44,11 @@ class Header extends Component{
                     return item1.key ===pathKey
                 })
             if(tem){title=tem.title}
-            
             }else{
                 if(pathKey===item.key){
                     title=item.title
                 }
             }
-            
         })
         this.setState({title})
         return title
@@ -93,9 +97,9 @@ class Header extends Component{
                     <Button type='link' size='small' onClick={showConfirm} >退出登录</Button>
                 </div>
                 <div className="headerBoottom">
-                    <div className="headerBoottomLeft">{this.props.menuInfo||this.state.title}</div>
+                    <div className="headerBoottomLeft" style={{color:'#52c41a'}}>{this.props.menuInfo||this.state.title}</div>
                     <div className="headerBoottomRight">
-                        {this.state.date}
+                        {this.state.date}.
                         <ClockCircleOutlined  spin className='imgTu'/>
                     </div>
                 </div>

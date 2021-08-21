@@ -1,6 +1,6 @@
 //项目的菜单配置
 // eslint-disable-next-line import/no-anonymous-default-export
-export default [
+  export default [
   {
     title: '首页', // 菜单标题名称
     key: 'home', // 对应的path

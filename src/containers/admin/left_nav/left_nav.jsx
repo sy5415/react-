@@ -9,7 +9,14 @@ import  menuList from '../../../config/menu_config'
 import './css/leftNav.less'
 const { SubMenu } = Menu;
 @connect(
-    state=>({menuInfo:state.menuInfo}),
+    state=>({
+        menuInfo:state.menuInfo,
+        //获取登录状态可以访问那些左边标签的权限 ["home", "prod_about", "category", "product", "user"]
+        menus:state.userInfo.user.role.menus,
+        //获取登录的用户如果是admin直接返回true获取所有标签权限
+        username:state.userInfo.user.username
+    }),
+        
     {
         saveTitle:menuInfo
     }
@@ -23,11 +30,29 @@ class left_nav extends Component {
     //         });
     // };
     componentDidMount(){
-        console.log(this.props.location)
+        //路径 {pathname: "/admin/user", search: "", hash: "", state: undefined, key: "ccgtce"}
+        // console.log(this.props.location)
+        // console.log(this.props.location.pathname.split('/').splice(2))
+    }
+    //校验菜单权限
+    hasAuth=(item)=>{
+        //获取当前用户可以看到的
+        if(this.props.username==='admin'){return true}
+        else if(!item.children){
+            return this.props.menus.find((item2)=>{return item2===item.key})
+        }else if(item.children){
+           return item.children.some((item3)=>{
+               return  this.props.menus.indexOf(item3.key)!==-1
+            })
+        }
+        console.log(this.props.menus,item)
     }
     menuListHuidiao(target){
        return target.map((item)=>{
+        //判断路径权限
+        if(this.hasAuth(item)){
             if(!item.children){
+                
                 return(
                 <Menu.Item key={item.key} icon={<HomeOutlined />} onClick={()=>{this.props.saveTitle(item.title)}}>
                     <Link to={item.path}>{item.title}</Link>
@@ -40,6 +65,9 @@ class left_nav extends Component {
                 </SubMenu>
                 )
               }
+        }else{
+            return ""
+        }
         })
     }
     render() {
@@ -49,7 +77,10 @@ class left_nav extends Component {
                 <MacCommandOutlined className='big'/>
                 <div className='a'>商品管理系统</div>
                 </header>
-            <Menu selectedKeys={this.props.location.pathname.split('/').reverse()[0]} mode="inline" theme="dark" defaultOpenKeys={this.props.location.pathname.split('/').splice(2)} >
+            <Menu
+            // {判断左边标签选中}
+            selectedKeys={this.props.location.pathname.indexOf('product')!==-1?'product':(this.props.location.pathname.indexOf('user')!==-1?'user':this.props.location.pathname.split('/').reverse()[0])}
+             mode="inline" theme="dark" defaultOpenKeys={this.props.location.pathname.split('/').splice(2)} >
               {this.menuListHuidiao(menuList)}
             </Menu>
           </div>

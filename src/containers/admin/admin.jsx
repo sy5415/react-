@@ -12,11 +12,14 @@ import Header from './header/header'
 import Home from '../../components/home/home'
 import Category from '../category/category'
 import Product from '../product/product'
+import Detail from '../product/detail'
+import AddUpdate from '../product/add_update'
 import User from '../user/user'
 import Role from '../role/role'
 import Bar from '../bar/bar'
 import Line from '../line/line'
 import Pie from '../pie/pie'
+import Modify from '../user/modify'
 const {Footer, Sider, Content } = Layout;
 
 @connect(
@@ -50,14 +53,20 @@ class Admin extends Component{
                 <Sider className='sider'>
                     <LeftNav/>
                 </Sider>
-                <Layout>
+                <Layout className='layout'>
                     <Header header={this.props.userInfo}>Header</Header>
                     <Content className='content'>
                         <Switch>
                             <Route path='/admin/home' component={Home}/>
                             <Route path='/admin/prod_about/category' component={Category}/>
-                            <Route path='/admin/prod_about/product' component={Product}/>
-                            <Route path='/admin/user' component={User}/>
+                            <Route path='/admin/prod_about/product' component={Product} exact/>
+                            <Route path='/admin/prod_about/product/detail' component={Detail} exact />
+                            <Route path='/admin/prod_about/product/detail/:id' component={Detail} />
+                            <Route path='/admin/prod_about/product/add_update' component={AddUpdate} exact/>
+                            <Route path='/admin/prod_about/product/add_update/:id' component={AddUpdate}/>
+                            <Route path='/admin/user' component={User} exact/>
+                            <Route path='/admin/user/modfiy' component={Modify} exact />
+                            <Route path='/admin/user/modfiy/:id' component={Modify}/>
                             <Route path='/admin/role' component={Role}/>
                             <Route path='/admin/charts/bar' component={Bar}/>
                             <Route path='/admin/charts/line' component={Line}/>
